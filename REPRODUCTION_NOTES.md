@@ -7,5 +7,9 @@ thrilled by ...  ,we found that ,
 # results 
 
 # how to use 
-I write a new api for the essay 
+I write a new api for the essay
+
+# reproduction log
+
+- 下载模型 HF 权重 ECG-R1-8B-RL (https://huggingface.co/PKUDigitalHealth/ECG-R1-8B-RL) 
 

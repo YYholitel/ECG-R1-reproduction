@@ -13,7 +13,6 @@ export ECG_MODEL_CONFIG='coca_ViT-B-32'
 export FREEZE_ECG_TOWER=True 
 export FREEZE_ECG_PROJECTOR=True
 
-
 swift infer \
     --model /path/to/rl/checkpoint \
     --model_type ecg_r1 \
