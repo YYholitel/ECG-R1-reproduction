@@ -179,3 +179,6 @@ If you find ECG-R1 helpful for your research and applications, please cite our p
 
 ## Acknowledgement
 We thank the authors of [PULSE](https://github.com/AIMedLab/PULSE/tree/dev), [ECG-Chat](https://github.com/YubaoZhao/ECG-Chat), [GEM](https://github.com/lanxiang1017/GEM), and [Swift](https://github.com/modelscope/ms-swift) for their publicly released models, datasets, and training codes.
+
+## 复现进度
+- 阶段 0 环境准备完成
