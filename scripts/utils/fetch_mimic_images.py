@@ -22,7 +22,7 @@ import json
 import os
 import sys
 
-URL = ("https://huggingface.co/datasets/LANSG/ECG-Grounding/resolve/main/"
+URL = ("https://hf-mirror.com/datasets/LANSG/ECG-Grounding/resolve/main/"
        "ecg_images/gen_images/mimic_gen.zip")
 
 

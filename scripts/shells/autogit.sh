@@ -44,6 +44,24 @@ if [ "${lfs:-0}" -gt 0 ]; then
   exit 1
 fi
 
+# Fail closed on any large untracked directory. Download tools keep dropping
+# dataset checkouts into the repository; a single `git add` would sweep them in,
+# and gitignore only protects the names we already know about.
+BIG_DIR_MB=${BIG_DIR_MB:-50}
+big_dirs=$(git status --porcelain --untracked-files=normal 2>/dev/null \
+  | awk '$1=="??"{ $1=""; sub(/^ /,""); print }' \
+  | while IFS= read -r d; do
+      [ -d "$d" ] || continue
+      mb=$(du -sm "$d" 2>/dev/null | cut -f1)
+      [ "${mb:-0}" -gt "$BIG_DIR_MB" ] && printf '  %sMB  %s\n' "$mb" "$d"
+    done)
+if [ -n "$big_dirs" ]; then
+  echo "ABORT: untracked directory larger than ${BIG_DIR_MB}MB present."
+  echo "  gitignore it, or move it out of the checkout, then re-run:"
+  echo "$big_dirs"
+  exit 1
+fi
+
 if [ -z "$(git status --porcelain)" ]; then
   echo "no changes"
   exit 0

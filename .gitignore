@@ -25,3 +25,5 @@ hfd.sh
 
 # keep this small evidence directory even though *.jsonl is ignored overall
 !eval_records/**
+ECG-Grounding/
+.hfd/
