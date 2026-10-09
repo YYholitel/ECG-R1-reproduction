@@ -1,0 +1,25 @@
+50-sample real evaluation, 2026-10-09
+result file : /data/lihy/model_cache/ECG-R1-8B-RL/infer_result/20261009-161920.jsonl
+dataset     : 50 records from ecg-grounding-test-mimiciv_ecg_missing100.jsonl
+config      : upstream env vars (IMAGE_MAX_TOKEN_NUM=768 ...), max_new_tokens 1024, temperature 0
+runtime     : 1480.7 s, 40400 prompt tokens, 40153 generated tokens, 27.1 tok/s, single RTX 3090
+
+rhythm class agreement : 41/50 = 82.0%
+heart-rate abs error   : mean 4.8 bpm, max 43 bpm (44 samples had a rate in the ground truth)
+
+misclassifications
+  sinus rhythm        -> sinus bradycardia    3
+  sinus arrhythmia    -> sinus rhythm         2
+  atrial flutter      -> sinus tachycardia    1
+  sinus rhythm        -> sinus arrhythmia     1
+  atrial fibrillation  -> sinus rhythm         1
+  other               -> sinus rhythm         1
+
+notes
+  - Most misses sit on a fuzzy boundary: "sinus rhythm" vs "sinus bradycardia" when the
+    rate is near 60. Part of the 18% is label-boundary noise, not clinical error.
+  - Two misses are substantive: atrial flutter read as sinus tachycardia (reproduces the
+    5-sample result), and one atrial fibrillation missed entirely.
+  - One outlier dominates the rate error: ground truth 85 bpm read as 42.
+  - Metric is keyword matching over 6 labels; the official scripts under
+    scripts/evaluation/ have NOT been run. Signal, not benchmark.

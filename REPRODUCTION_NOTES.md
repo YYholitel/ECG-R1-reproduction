@@ -118,3 +118,31 @@ references, using HTTP range requests against `mimic_gen.zip`. Five images cost 
 4 MB instead of 21.4 GB, in roughly 30 seconds. Run it where HuggingFace is reachable
 (the Windows side, in this setup) and copy the extracted tree to the GPU host; then
 point the records' `images` field at the local absolute paths.
+## 50-sample real evaluation (2026-10-09)
+
+Same procedure as the 5-sample check, scaled up: 50 records from
+`ecg-grounding-test-mimiciv_ecg_missing100.jsonl`, images pulled on demand, one forward
+pass each with the upstream env vars.
+
+    rhythm class agreement : 41/50 = 82.0%
+    heart-rate abs error   : mean 4.8 bpm, max 43 bpm (44 of 50 stated a rate)
+
+Misclassifications, by frequency:
+
+| ground truth | model | n |
+|---|---|---|
+| sinus rhythm | sinus bradycardia | 3 |
+| sinus arrhythmia | sinus rhythm | 2 |
+| atrial flutter | sinus tachycardia | 1 |
+| sinus rhythm | sinus arrhythmia | 1 |
+| atrial fibrillation | sinus rhythm | 1 |
+| other | sinus rhythm | 1 |
+
+Most misses sit on a fuzzy boundary - "sinus rhythm" vs "sinus bradycardia" when the rate
+is near 60 - so part of the 18% is label-boundary noise rather than clinical error. Two
+misses are substantive: atrial flutter is again read as sinus tachycardia (reproducing the
+5-sample result), and one atrial fibrillation is missed outright. A single outlier
+dominates the rate error (85 bpm ground truth read as 42).
+
+These numbers come from keyword matching over six labels. The official scripts under
+`scripts/evaluation/` have not been run, so this is a signal, not a benchmark.
