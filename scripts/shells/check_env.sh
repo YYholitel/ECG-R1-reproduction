@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 # ECG-R1 environment verification: imports, versions, CUDA visibility.
 # Usage: bash scripts/shells/check_env.sh
-# Does not require exclusive GPU access; allocates only a few MB on cuda:0.
+# Allocates only a few MB on cuda:0, so it is safe on a shared GPU box.
 set -uo pipefail
-PY=/data/lihy/miniconda3/envs/ecg_r1/bin/python
+# shellcheck disable=SC1091
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/env.sh"
 
 echo "=== ECG-R1 environment check ==="
 date
-echo
-echo "--- interpreter ---"
-"$PY" -V
+echo "PROJ          : $PROJ"
+echo "python        : $PY"
+echo "HF_HUB_CACHE  : $HF_HUB_CACHE"
+echo "HF_ENDPOINT   : $HF_ENDPOINT"
 echo
 echo "--- installed versions ---"
 "$PY" - <<'PYEOF'
@@ -38,9 +40,9 @@ def _torch():
     return f"{torch.__version__} (cuda {torch.version.cuda})"
 def _cuda():
     import torch
-    n = torch.cuda.device_count()
     if not torch.cuda.is_available():
         raise RuntimeError("torch.cuda.is_available() is False")
+    n = torch.cuda.device_count()
     x = torch.randn(1000, 1000, device="cuda:0")
     s = float((x @ x).sum())
     return f"{n} device(s), device0={torch.cuda.get_device_name(0)}, matmul={s:.0f}"
@@ -56,12 +58,11 @@ check("import ecg_r1 vllm plugin", lambda: __import__("ecg_r1").__file__)
 
 import transformers
 ver = transformers.__version__
-bound = tuple(int(x) for x in ver.split(".")[:2])
-if bound >= (4, 58):
+if tuple(int(x) for x in ver.split(".")[:2]) >= (4, 58):
     fail.append("transformers<4.58")
-    print(f"  transformers version bound            FAIL {ver} violates the project cap <4.58")
+    print(f"  {'transformers version bound':34s} FAIL {ver} violates the project cap <4.58")
 else:
-    print(f"  transformers version bound            OK   {ver} < 4.58")
+    print(f"  {'transformers version bound':34s} OK   {ver} < 4.58")
 
 print()
 print("RESULT:", "ALL OK" if not fail else f"FAILURES: {fail}")

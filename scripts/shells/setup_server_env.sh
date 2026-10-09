@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname "$0")/env.sh" 2>/dev/null || true
 # Idempotent base-environment setup for the ECG-R1 reproduction (server nccserv0).
 # Safe to re-run after every `git pull`; pip no-ops anything already satisfied.
 #
