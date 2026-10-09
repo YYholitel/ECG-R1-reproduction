@@ -15,3 +15,10 @@ ecg_r1.egg-info
 *.html
 *.zip
 *.pt
+# Never let datasets or weights reach GitHub. Anything downloaded into a
+# checkout must match one of these, otherwise git add -A will stage gigabytes.
+*.safetensors
+ECG-R1-8B-RL/
+ECG-Protocol-Guided-Grounding-CoT/
+hfd.sh
+*.bin

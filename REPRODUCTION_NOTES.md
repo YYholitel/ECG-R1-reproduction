@@ -111,3 +111,10 @@ image. Any inference run must source the upstream settings.
 
 - Atrial flutter is called atrial fibrillation, or sinus tachycardia.
 - LVH and bundle branch block are over-reported relative to ground truth.
+### Getting real test images without the 21.4 GB download
+
+`scripts/utils/fetch_mimic_images.py` pulls only the images a given test-set jsonl
+references, using HTTP range requests against `mimic_gen.zip`. Five images cost about
+4 MB instead of 21.4 GB, in roughly 30 seconds. Run it where HuggingFace is reachable
+(the Windows side, in this setup) and copy the extracted tree to the GPU host; then
+point the records' `images` field at the local absolute paths.

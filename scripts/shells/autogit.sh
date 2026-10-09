@@ -1,20 +1,32 @@
 #!/usr/bin/env bash
 # Periodic snapshot of the reproduction repo: commit and push whatever changed.
+# Installed as a cron job, so the remote copy keeps pace without anyone
+# remembering to push.
 #
-#   Installed as a cron job (see install_autogit_cron.sh), so the remote copy of
-#   this repository keeps pace without anyone remembering to push.
-#
-# Guard rails:
-#   * never stages anything above MAX_MB (default 3000 MB, the agreed ceiling)
-#   * never stages anything above GitHub's hard 100 MB per-file limit
-#   * if an oversized file is already tracked/ignored incorrectly, the commit is
-#     aborted and the index is reset rather than pushing something broken
+# Guard rails, in order - each one exists because it has already been needed:
+#   1. refuse to run at all if any git-lfs object is tracked (this repo must stay
+#      LFS-free; a stray 17.75 GB model copy once got staged here)
+#   2. stage with explicit pathspec exclusions for datasets and weights, so a
+#      download landing inside the checkout can never be picked up
+#   3. after staging, abort if any staged file exceeds MAX_MB (3000, the agreed
+#      ceiling) or GitHub's hard 100 MB per-file limit, and reset the index
 set -uo pipefail
 PROJ=${PROJ:-/data/lihy/ECG-R1_repoduction}
 MAX_MB=${MAX_MB:-3000}
 GITHUB_LIMIT_MB=${GITHUB_LIMIT_MB:-100}
 BRANCH=${BRANCH:-main}
 LOG=${LOG:-/data/lihy/autogit.log}
+
+# Paths that must never be staged even if .gitignore is ever weakened.
+EXCLUDES=(
+  ':(exclude)ECG-R1-8B-RL'
+  ':(exclude)ECG-Protocol-Guided-Grounding-CoT'
+  ':(exclude)stray_from_repo'
+  ':(exclude)**/*.safetensors'
+  ':(exclude)**/*.pt'
+  ':(exclude)**/*.bin'
+  ':(exclude)**/checkpoint/**'
+)
 
 exec >>"$LOG" 2>&1
 echo "----- $(date '+%F %T') -----"
@@ -25,12 +37,19 @@ if command -v flock >/dev/null 2>&1; then
   flock -n 9 || { echo "another run holds the lock; skipping"; exit 0; }
 fi
 
+lfs=$(git lfs ls-files 2>/dev/null | wc -l)
+if [ "${lfs:-0}" -gt 0 ]; then
+  echo "ABORT: ${lfs} git-lfs tracked file(s) present; this repo must stay LFS-free"
+  git lfs ls-files | sed 's/^/  /'
+  exit 1
+fi
+
 if [ -z "$(git status --porcelain)" ]; then
   echo "no changes"
   exit 0
 fi
 
-git add -A
+git add -A -- . "${EXCLUDES[@]}"
 
 blocked=""
 while IFS= read -r f; do
@@ -47,9 +66,15 @@ if [ -n "$blocked" ]; then
   exit 1
 fi
 
+if [ -z "$(git diff --cached --name-only)" ]; then
+  echo "nothing to commit after exclusions"
+  exit 0
+fi
+
 staged=$(git diff --cached --name-only | wc -l)
 git -c i18n.commitEncoding=UTF-8 commit -q -m "自动快照 $(date '+%F %T')（${staged} 个文件）" \
   && echo "committed $(git rev-parse --short HEAD) ($staged files)"
+git diff --cached --name-only HEAD~1 | sed 's/^/  staged: /'
 if git push -q origin "$BRANCH"; then
   echo "pushed -> origin/$BRANCH"
 else
