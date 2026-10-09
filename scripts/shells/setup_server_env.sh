@@ -38,8 +38,13 @@ transformers==$TRANSFORMERS_PIN
 EOF
 
 SAFE_REQ=/data/lihy/requirements_safe.txt
-grep -vE '^[[:space:]]*(autoawq|auto_gptq)[[:space:]]*$' "$PROJ/requirements.txt" > "$SAFE_REQ"
+# pip resolves `-r` includes relative to the file that contains them, so the
+# `-r requirements/framework.txt` line must be rewritten to an absolute path.
+grep -vE '^[[:space:]]*(autoawq|auto_gptq)[[:space:]]*$' "$PROJ/requirements.txt" \
+  | sed "s#^-r requirements/#-r /data/lihy/ECG-R1_repoduction/requirements/#" > "$SAFE_REQ"
 echo "requirements_safe.txt: dropped $(grep -cE '^[[:space:]]*(autoawq|auto_gptq)[[:space:]]*$' "$PROJ/requirements.txt") package(s)"
+
+cd "$PROJ" || { echo "FATAL: cannot cd $PROJ"; exit 1; }
 
 step() { echo; echo "===== $* ====="; }
 
