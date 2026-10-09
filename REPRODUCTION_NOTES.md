@@ -74,3 +74,40 @@ repository keeps only the reproducible setup record.
 - Real data has not been downloaded; `inference.sh` still carries `/path/to` placeholders.
 - Training (SFT/RL) has not been attempted.
 - Evaluation scripts have not been run against the official test sets.
+## First real evaluation signal: 5 MIMIC-IV samples (2026-10-09)
+
+Not a benchmark - five samples - but the first end-to-end check against ground truth.
+The real images were pulled out of `ecg_images/gen_images/mimic_gen.zip` (21.4 GB,
+87,553 entries) with HTTP range requests run on the Windows side, because this host's
+xet-bridge link to HuggingFace is intermittent. Only ~4 MB moved for five images.
+Ground truth travels inside the same records, so the output is checkable.
+
+| id | ground truth | model output (upstream env) | HR error |
+|---|---|---|---|
+| 49722328 | atrial fibrillation | atrial fibrillation | -6 |
+| 49975043 | sinus rhythm, 62 bpm | sinus rhythm, 64 bpm (+ APC, LVH) | +2 |
+| 42162044 | sinus rhythm, 74 bpm | normal sinus rhythm, 72 bpm | -2 |
+| 46936047 | **atrial flutter**, rapid response, 135 bpm | **sinus tachycardia**, 128 bpm (+ LBBB) | -7 |
+| 47772418 | sinus rhythm, normal ECG, 88 bpm | normal sinus rhythm, 83 bpm | -5 |
+
+Four of five rhythm classifications agree. The miss is atrial flutter read as sinus
+tachycardia, which is the hardest distinction in this set.
+
+### The upstream env vars matter far more than expected
+
+`scripts/shells/inference.sh` exports `IMAGE_MAX_TOKEN_NUM=768` and friends. Running
+without them lets each sample carry ~3700 image tokens instead of ~808, and heart-rate
+accuracy collapses:
+
+| run | mean absolute HR error |
+|---|---|
+| without the env vars | 17.8 bpm, always an underestimate |
+| with the env vars | 4.4 bpm |
+
+`IMAGE_MAX_TOKEN_NUM` is not cosmetic; it changes what the model can read off the
+image. Any inference run must source the upstream settings.
+
+### Failure modes to watch on larger sets
+
+- Atrial flutter is called atrial fibrillation, or sinus tachycardia.
+- LVH and bundle branch block are over-reported relative to ground truth.
