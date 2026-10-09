@@ -1,0 +1,157 @@
+run sh: `/data/lihy/miniconda3/envs/ecg_r1/bin/python /data/lihy/ECG-R1_repoduction/swift/cli/infer.py --model /data/lihy/model_cache/ECG-R1-8B-RL --model_type ecg_r1 --template ecg_r1 --torch_dtype bfloat16 --custom_register_path ecg_r1/register.py --infer_backend pt --val_dataset /data/lihy/result/smoke/sample.jsonl --max_batch_size 1 --max_new_tokens 128 --temperature 0.0 --task_type causal_lm --use_hf true`
+[INFO:swift] Successfully registered `/data/lihy/ECG-R1_repoduction/swift/llm/dataset/data/dataset_info.json`.
+[INFO:swift] Successfully loaded /data/lihy/model_cache/ECG-R1-8B-RL/args.json.
+[INFO:swift] Training status callback loaded and registered.
+[INFO:swift] Successfully registered ['ecg_r1/register.py'].
+[INFO:swift] Successfully imported external_plugins: ['ecg_r1/plugin.py'].
+[INFO:swift] rank: -1, local_rank: -1, world_size: 1, local_world_size: 1
+`torch_dtype` is deprecated! Use `dtype` instead!
+[INFO:swift] Because len(args.val_dataset) > 0, setting split_dataset_ratio: 0.0
+[INFO:swift] Setting args.lazy_tokenize: True
+[INFO:swift] args.result_path: /data/lihy/model_cache/ECG-R1-8B-RL/infer_result/20261009-134655.jsonl
+[INFO:swift] Setting args.eval_human: False
+[INFO:swift] Global seed set to 42
+[INFO:swift] args: InferArguments(model='/data/lihy/model_cache/ECG-R1-8B-RL', model_type='ecg_r1', model_revision=None, task_type='causal_lm', torch_dtype=torch.bfloat16, attn_impl=None, new_special_tokens=[], num_labels=None, problem_type=None, rope_scaling=None, device_map=None, max_memory={}, max_model_len=None, local_repo_path=None, init_strategy=None, template='ecg_r1', system='You are a helpful, harmless clinical ECG assistant. Provide concise, evidence-based interpretations.', max_length=262144, truncation_strategy='left', max_pixels=None, agent_template=None, norm_bbox=None, use_chat_template=True, padding_free=False, padding_side='right', loss_scale='default', sequence_parallel_size=1, response_prefix=None, template_backend='swift', dataset=[], val_dataset=['/data/lihy/result/smoke/sample.jsonl'], split_dataset_ratio=0.0, data_seed=42, dataset_num_proc=1, load_from_cache_file=False, dataset_shuffle=True, val_dataset_shuffle=False, streaming=False, interleave_prob=None, stopping_strategy='first_exhausted', shuffle_buffer_size=1000, download_mode='reuse_dataset_if_exists', columns={}, strict=False, remove_unused_columns=True, model_name=None, model_author=None, custom_dataset_info=[], quant_method=None, quant_bits=None, hqq_axis=None, bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_quant_type='nf4', bnb_4bit_use_double_quant=True, bnb_4bit_quant_storage=None, max_new_tokens=128, temperature=0.0, top_k=None, top_p=None, repetition_penalty=None, num_beams=1, stream=False, stop_words=[], logprobs=False, top_logprobs=None, ckpt_dir='/data/lihy/model_cache/ECG-R1-8B-RL', lora_modules=[], tuner_backend='peft', train_type='full', adapters=[], external_plugins=['ecg_r1/plugin.py'], seed=42, model_kwargs={}, load_args=True, load_data_args=False, packing=False, packing_length=None, lazy_tokenize=True, cached_dataset=[], custom_register_path=['ecg_r1/register.py'], use_hf=True, hub_token=None, ddp_timeout=18000000, ddp_backend=None, ignore_args_error=False, use_swift_lora=False, vllm_gpu_memory_utilization=0.9, vllm_tensor_parallel_size=1, vllm_pipeline_parallel_size=1, vllm_enable_expert_parallel=False, vllm_max_num_seqs=256, vllm_max_model_len=None, vllm_disable_custom_all_reduce=True, vllm_enforce_eager=False, vllm_limit_mm_per_prompt={}, vllm_max_lora_rank=16, vllm_enable_prefix_caching=False, vllm_use_async_engine=False, vllm_quantization=None, vllm_reasoning_parser=None, vllm_disable_cascade_attn=False, vllm_data_parallel_size=1, gpu_memory_utilization=None, tensor_parallel_size=None, limit_mm_per_prompt=None, data_parallel_size=None, use_async_engine=None, sglang_tp_size=1, sglang_pp_size=1, sglang_dp_size=1, sglang_ep_size=1, sglang_enable_ep_moe=False, sglang_mem_fraction_static=None, sglang_context_length=None, sglang_disable_cuda_graph=False, sglang_quantization=None, sglang_kv_cache_dtype='auto', sglang_enable_dp_attention=False, sglang_disable_custom_all_reduce=True, lmdeploy_tp=1, lmdeploy_session_len=None, lmdeploy_cache_max_entry_count=0.8, lmdeploy_quant_policy=0, lmdeploy_vision_batch_size=1, merge_lora=False, safe_serialization=True, max_shard_size='5GB', infer_backend='pt', result_path='/data/lihy/model_cache/ECG-R1-8B-RL/infer_result/20261009-134655.jsonl', write_batch_size=1000, metric=None, max_batch_size=1, val_dataset_sample=None, reranker_use_activation=True)
+[INFO:swift] model_kwargs: {'device_map': 'cuda:0'}
+`torch_dtype` is deprecated! Use `dtype` instead!
+[INFO:swift] Initializing ECG components from ecg_coca/checkpoint/cpt_wfep_epoch_20.pt...
+/data/lihy/miniconda3/envs/ecg_r1/lib/python3.10/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+[INFO:swift] Loaded ECG tower from ecg_coca/checkpoint/cpt_wfep_epoch_20.pt
+[INFO:swift] ECG components attached successfully.
+[INFO:swift] ECGR1: Bound custom forward method to backbone model.
+TrainingStatusCallback registered to swift.plugin.extra_callbacks
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:04<00:14,  5.00s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:09<00:09,  4.93s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:12<00:03,  3.70s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:15<00:00,  3.63s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:15<00:00,  3.91s/it]
+[INFO:swift] Setting max_ratio: 200. You can adjust this hyperparameter through the environment variable: `MAX_RATIO`.
+[INFO:swift] Setting frame_factor: 2. You can adjust this hyperparameter through the environment variable: `FRAME_FACTOR`.
+[INFO:swift] Setting fps: 2.0. You can adjust this hyperparameter through the environment variable: `FPS`.
+[INFO:swift] Setting fps_min_frames: 4. You can adjust this hyperparameter through the environment variable: `FPS_MIN_FRAMES`.
+[INFO:swift] Setting fps_max_frames: 768. You can adjust this hyperparameter through the environment variable: `FPS_MAX_FRAMES`.
+[INFO:swift] Setting image_max_token_num: 16384. You can adjust this hyperparameter through the environment variable: `IMAGE_MAX_TOKEN_NUM`.
+[INFO:swift] Setting image_min_token_num: 4. You can adjust this hyperparameter through the environment variable: `IMAGE_MIN_TOKEN_NUM`.
+[INFO:swift] Setting spatial_merge_size: 2. You can adjust this hyperparameter through the environment variable: `SPATIAL_MERGE_SIZE`.
+[INFO:swift] Setting video_max_token_num: 768. You can adjust this hyperparameter through the environment variable: `VIDEO_MAX_TOKEN_NUM`.
+[INFO:swift] Setting video_min_token_num: 128. You can adjust this hyperparameter through the environment variable: `VIDEO_MIN_TOKEN_NUM`.
+[INFO:swift] Setting FREEZE_ECG_TOWER: False. You can adjust this hyperparameter through the environment variable: `FREEZE_ECG_TOWER`.
+[INFO:swift] Setting FREEZE_ECG_PROJECTOR: False. You can adjust this hyperparameter through the environment variable: `FREEZE_ECG_PROJECTOR`.
+[INFO:swift] ECG Tower: Trainable (train mode, requires_grad=True)
+[INFO:swift] ECG Projector: Trainable (train mode, requires_grad=True)
+[INFO:swift] default_system: 'You are a helpful, harmless clinical ECG assistant. Provide concise, evidence-based interpretations.'
+[INFO:swift] max_length: 262144
+[INFO:swift] response_prefix: ''
+[INFO:swift] agent_template: hermes
+[INFO:swift] norm_bbox: norm1000
+[INFO:swift] Setting ROOT_IMAGE_DIR: None. You can adjust this hyperparameter through the environment variable: `ROOT_IMAGE_DIR`.
+[INFO:swift] Setting ECG_SEQ_LENGTH: 5000. You can adjust this hyperparameter through the environment variable: `ECG_SEQ_LENGTH`.
+[INFO:swift] Setting ECG_PATCH_SIZE: 50. You can adjust this hyperparameter through the environment variable: `ECG_PATCH_SIZE`.
+[INFO:swift] Setting ROOT_ECG_DIR: None. You can adjust this hyperparameter through the environment variable: `ROOT_ECG_DIR`.
+[INFO:swift] Setting INTERLEAVE_PROB: 0.1. You can adjust this hyperparameter through the environment variable: `INTERLEAVE_PROB`.
+[INFO:swift] Setting MODALITY_DROPOUT_PROB: 0.5. You can adjust this hyperparameter through the environment variable: `MODALITY_DROPOUT_PROB`.
+[INFO:swift] model: ECGR1ForConditionalGeneration(
+  (model): Qwen3VLModel(
+    (visual): Qwen3VLVisionModel(
+      (patch_embed): Qwen3VLVisionPatchEmbed(
+        (proj): Conv3d(3, 1152, kernel_size=(2, 16, 16), stride=(2, 16, 16))
+      )
+      (pos_embed): Embedding(2304, 1152)
+      (rotary_pos_emb): Qwen3VLVisionRotaryEmbedding()
+      (blocks): ModuleList(
+        (0-26): 27 x Qwen3VLVisionBlock(
+          (norm1): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+          (norm2): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+          (attn): Qwen3VLVisionAttention(
+            (qkv): Linear(in_features=1152, out_features=3456, bias=True)
+            (proj): Linear(in_features=1152, out_features=1152, bias=True)
+          )
+          (mlp): Qwen3VLVisionMLP(
+            (linear_fc1): Linear(in_features=1152, out_features=4304, bias=True)
+            (linear_fc2): Linear(in_features=4304, out_features=1152, bias=True)
+            (act_fn): GELUTanh()
+          )
+        )
+      )
+      (merger): Qwen3VLVisionPatchMerger(
+        (norm): LayerNorm((1152,), eps=1e-06, elementwise_affine=True)
+        (linear_fc1): Linear(in_features=4608, out_features=4608, bias=True)
+        (act_fn): GELU(approximate='none')
+        (linear_fc2): Linear(in_features=4608, out_features=4096, bias=True)
+      )
+      (deepstack_merger_list): ModuleList(
+        (0-2): 3 x Qwen3VLVisionPatchMerger(
+          (norm): LayerNorm((4608,), eps=1e-06, elementwise_affine=True)
+          (linear_fc1): Linear(in_features=4608, out_features=4608, bias=True)
+          (act_fn): GELU(approximate='none')
+          (linear_fc2): Linear(in_features=4608, out_features=4096, bias=True)
+        )
+      )
+    )
+    (language_model): Qwen3VLTextModel(
+      (embed_tokens): Embedding(151672, 4096, padding_idx=151643)
+      (layers): ModuleList(
+        (0-35): 36 x Qwen3VLTextDecoderLayer(
+          (self_attn): Qwen3VLTextAttention(
+            (q_proj): Linear(in_features=4096, out_features=4096, bias=False)
+            (k_proj): Linear(in_features=4096, out_features=1024, bias=False)
+            (v_proj): Linear(in_features=4096, out_features=1024, bias=False)
+            (o_proj): Linear(in_features=4096, out_features=4096, bias=False)
+            (q_norm): Qwen3VLTextRMSNorm((128,), eps=1e-06)
+            (k_norm): Qwen3VLTextRMSNorm((128,), eps=1e-06)
+          )
+          (mlp): Qwen3VLTextMLP(
+            (gate_proj): Linear(in_features=4096, out_features=12288, bias=False)
+            (up_proj): Linear(in_features=4096, out_features=12288, bias=False)
+            (down_proj): Linear(in_features=12288, out_features=4096, bias=False)
+            (act_fn): SiLUActivation()
+          )
+          (input_layernorm): Qwen3VLTextRMSNorm((4096,), eps=1e-06)
+          (post_attention_layernorm): Qwen3VLTextRMSNorm((4096,), eps=1e-06)
+        )
+      )
+      (norm): Qwen3VLTextRMSNorm((4096,), eps=1e-06)
+      (rotary_emb): Qwen3VLTextRotaryEmbedding()
+    )
+    (ecg_tower): EcgTransformer(
+      (conv1): Conv1d(12, 768, kernel_size=(50,), stride=(50,), bias=False)
+      (patch_dropout): Identity()
+      (ln_pre): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (transformer): Transformer(
+        (resblocks): ModuleList(
+          (0-11): 12 x ResidualAttentionBlock(
+            (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)
+            )
+            (ls_1): Identity()
+            (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+            (mlp): Sequential(
+              (c_fc): Linear(in_features=768, out_features=3072, bias=True)
+              (gelu): GELU(approximate='none')
+              (c_proj): Linear(in_features=3072, out_features=768, bias=True)
+            )
+            (ls_2): Identity()
+          )
+        )
+      )
+      (ln_post): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+    )
+    (ecg_projector): Sequential(
+      (0): Linear(in_features=768, out_features=4096, bias=True)
+      (1): GELU(approximate='none')
+      (2): Linear(in_features=4096, out_features=4096, bias=True)
+    )
+  )
+  (lm_head): Linear(in_features=4096, out_features=151672, bias=False)
+)
+[INFO:swift] Start time of running main: 2026-10-09 13:47:21.638709
+[INFO:swift] swift.__version__: 3.9.0
+[INFO:swift] request_config: RequestConfig(max_tokens=128, temperature=0.0, top_k=None, top_p=None, repetition_penalty=None, num_beams=1, stop=[], seed=None, stream=False, logprobs=False, top_logprobs=None, n=1, best_of=None, presence_penalty=0.0, frequency_penalty=0.0, length_penalty=1.0, return_details=False)
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1 examples [00:00, 302.66 examples/s]
+Map:   0%|          | 0/1 [00:00<?, ? examples/s]Map: 100%|██████████| 1/1 [00:00<00:00, 102.91 examples/s]
+[INFO:swift] val_dataset: Dataset({
+    features: ['messages', 'images', 'objects'],
+    num_rows: 1
+})
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.71s/it]100%|██████████| 1/1 [00:05<00:00,  5.71s/it]
+[INFO:swift] The inference results have been saved to result_path: `/data/lihy/model_cache/ECG-R1-8B-RL/infer_result/20261009-134655.jsonl`.
+[INFO:swift] End time of running main: 2026-10-09 13:47:30.683864
+{'num_prompt_tokens': 1472, 'num_generated_tokens': 128, 'num_samples': 1, 'runtime': 5.7094882619567215, 'samples/s': 0.17514704543017767, 'tokens/s': 22.418821815062742}

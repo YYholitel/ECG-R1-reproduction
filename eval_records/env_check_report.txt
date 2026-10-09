@@ -1,0 +1,68 @@
+=== post-setup verification ===
+Fri Oct  9 12:39:19 PM CST 2026
+
+=== ECG-R1 environment check ===
+Fri Oct  9 12:39:19 PM CST 2026
+PROJ          : /data/lihy/ECG-R1_repoduction
+python        : /data/lihy/miniconda3/envs/ecg_r1/bin/python
+HF_HUB_CACHE  : /data/lihy/model_cache/hub
+HF_ENDPOINT   : https://hf-mirror.com
+
+--- installed versions ---
+  torch            2.8.0+cu126
+  torchvision      0.23.0+cu126
+  vllm             0.11.0
+  transformers     4.57.1
+  tokenizers       0.22.2
+  accelerate       1.15.0
+  peft             0.14.0
+  trl              0.23.1
+  deepspeed        0.19.7
+  sglang           0.3.6.post2
+  datasets         3.6.0
+  qwen_vl_utils    0.0.14
+  timm             1.0.30
+  safetensors      0.8.0
+  ms-swift         3.9.0
+  ecg-r1           0.1.0
+
+--- imports + CUDA ---
+Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.8.0+cu126).
+  import torch                       OK   2.8.0+cu126 (cuda 12.6)
+  CUDA usable (matmul on cuda:0)     OK   8 device(s), device0=NVIDIA GeForce RTX 3090, matmul=-19935
+  import transformers                OK   4.57.1
+  import vllm                        OK   0.11.0
+  import deepspeed                   OK   0.19.7
+  import sglang                      OK   0.3.6.post2
+  import swift (ms-swift)            OK   3.9.0
+  import ecg_r1 vllm plugin          OK   /data/lihy/ECG-R1_repoduction/ecg_r1/__init__.py
+  transformers version bound         OK   4.57.1 in [4.55.2, 4.58)
+
+RESULT: ALL OK
+
+=== install log tail ===
+  accelerate       1.15.0
+  peft             0.14.0
+  trl              0.23.1
+  deepspeed        0.19.7
+  sglang           0.3.6.post2
+  datasets         3.6.0
+  qwen_vl_utils    0.0.14
+  timm             1.0.30
+  safetensors      0.8.0
+  ms-swift         3.9.0
+  ecg-r1           0.1.0
+
+--- imports + CUDA ---
+Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.8.0+cu126).
+  import torch                       OK   2.8.0+cu126 (cuda 12.6)
+  CUDA usable (matmul on cuda:0)     OK   8 device(s), device0=NVIDIA GeForce RTX 3090, matmul=32380
+  import transformers                OK   4.57.1
+  import vllm                        OK   0.11.0
+  import deepspeed                   OK   0.19.7
+  import sglang                      OK   0.3.6.post2
+  import swift (ms-swift)            OK   3.9.0
+  import ecg_r1 vllm plugin          OK   /data/lihy/ECG-R1_repoduction/ecg_r1/__init__.py
+  transformers version bound         OK   4.57.1 in [4.55.2, 4.58)
+
+RESULT: ALL OK

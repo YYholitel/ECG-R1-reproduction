@@ -22,3 +22,6 @@ ECG-R1-8B-RL/
 ECG-Protocol-Guided-Grounding-CoT/
 hfd.sh
 *.bin
+
+# keep this small evidence directory even though *.jsonl is ignored overall
+!eval_records/**
