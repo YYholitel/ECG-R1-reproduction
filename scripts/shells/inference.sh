@@ -25,10 +25,10 @@ swift infer \
     --torch_dtype bfloat16 \
     --custom_register_path 'ecg_r1/register.py' \
     --infer_backend pt \
-    --val_dataset /data/lihy/stray_from_repo/ECG-Protocol-Guided-Grounding-CoT/ecg_jsons/test_set/ecg-grounding-test-mimiciv_full.jsonl \
-    --max_batch_size 32 \
+    --val_dataset /data/lihy/stray_from_repo/ECG-Protocol-Guided-Grounding-CoT/ecg_jsons/test_set/ecg-grounding-test-mimiciv_ecg_missing100.jsonl \
+    --max_batch_size 4 \
     --task_type causal_lm \
-    --max_new_tokens 2048 \
+    --max_new_tokens 512 \
     --temperature 0.0 \
     --repetition_penalty 1.0 \
     --use_hf true
