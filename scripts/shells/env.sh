@@ -17,6 +17,9 @@ export MODEL_DIR=${MODEL_DIR:-/data/lihy/model_cache/ECG-R1-8B-RL}
 export HF_HUB_CACHE=${HF_HUB_CACHE:-/data/lihy/model_cache/hub}
 # huggingface.co times out from this host; the mirror works.
 export HF_ENDPOINT=${HF_ENDPOINT:-https://hf-mirror.com}
+# hf-xet talks to cas-bridge.xethub.hf.co directly, which the mirror does not
+# proxy and which times out from this host. Force the classic HTTPS path.
+export HF_HUB_DISABLE_XET=${HF_HUB_DISABLE_XET:-1}
 
 export TMPDIR=${TMPDIR:-/data/lihy/tmp}
 export PIP_CACHE_DIR=${PIP_CACHE_DIR:-/data/lihy/pip_cache}

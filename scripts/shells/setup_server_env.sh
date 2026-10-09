@@ -48,25 +48,32 @@ cd "$PROJ" || { echo "FATAL: cannot cd $PROJ"; exit 1; }
 
 step() { echo; echo "===== $* ====="; }
 
-step "1/6 torch 2.8.0 + cu126 (skip if already present)"
+step "1/7 torch 2.8.0 + cu126 (skip if already present)"
 if "$PY" -c 'import torch,sys; sys.exit(0 if torch.__version__.startswith("2.8.0+cu126") else 1)' 2>/dev/null; then
   echo "already installed: $("$PY" -c 'import torch;print(torch.__version__)')"
 else
   "$PY" -m pip install "$TORCH_WHL" "$TV_WHL"
 fi
 
-step "2/6 ms-swift itself (no deps)"
+step "2/7 ms-swift itself (no deps)"
 "$PY" -m pip install -e "$PROJ" --no-deps
 
-step "3/6 project dependencies (transformers pinned via constraints)"
+step "3/7 project dependencies (transformers pinned via constraints)"
 "$PY" -m pip install -r "$SAFE_REQ" -c "$CONSTRAINTS"
 
-step "4/6 deepspeed (sdist build, ops disabled)"
+step "4/7 deepspeed (sdist build, ops disabled)"
 DS_BUILD_OPS=0 "$PY" -m pip install deepspeed --no-build-isolation -c "$CONSTRAINTS"
 
-step "5/6 ECG-R1 vLLM plugin"
+step "5/7 ECG-R1 vLLM plugin"
 "$PY" -m pip install -e "$PROJ/ecg_r1" --no-deps
 
-step "6/6 verification"
+step "6/7 drop torchao (needs torch>=2.11, we are pinned to 2.8.0)"
+# torchao is dragged in transitively, nothing here declares it, and the current
+# release imports ScalingType from torch.nn.functional, which only exists in
+# torch >= 2.11. transformers guards it by version only, so a broken torchao
+# breaks `import peft` -> `import swift` entirely. Uninstall it.
+"$PY" -m pip uninstall -y torchao >/dev/null 2>&1 && echo "removed torchao" || echo "torchao not present"
+
+step "7/7 verification"
 "$PY" -m pip check || echo "WARN: pip check reported conflicts - review above"
 bash "$PROJ/scripts/shells/check_env.sh"

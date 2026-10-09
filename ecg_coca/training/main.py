@@ -496,6 +496,11 @@ def get_ecg_encoder(model_name, checkpoint_path, device):
         device=device,
         jit=False,
         output_dict=True,
+        # Do NOT fetch the HF text tower (ncbi/MedCPT-Query-Encoder) from the hub.
+        # This host cannot reach the HF xet bridge, and the text tower weights are
+        # part of the state_dict loaded right below from the local
+        # cpt_wfep_epoch_20.pt, so downloading them is unnecessary.
+        pretrained_hf=False,
         **model_kwargs,
     )
     model.to_empty(device=device)
