@@ -56,13 +56,20 @@ check("import sglang", lambda: __import__("sglang").__version__)
 check("import swift (ms-swift)", lambda: getattr(__import__("swift"), "__version__", "?"))
 check("import ecg_r1 vllm plugin", lambda: __import__("ecg_r1").__file__)
 
-import transformers
-ver = transformers.__version__
-if tuple(int(x) for x in ver.split(".")[:2]) >= (4, 58):
-    fail.append("transformers<4.58")
-    print(f"  {'transformers version bound':34s} FAIL {ver} violates the project cap <4.58")
-else:
-    print(f"  {'transformers version bound':34s} OK   {ver} < 4.58")
+try:
+    import transformers
+    ver = transformers.__version__
+    if tuple(int(x) for x in ver.split(".")[:2]) >= (4, 58):
+        fail.append("transformers<4.58")
+        print(f"  {'transformers version bound':34s} FAIL {ver} violates the project cap <4.58")
+    elif tuple(int(x) for x in ver.split(".")[:2]) < (4, 55):
+        fail.append("transformers>=4.55.2")
+        print(f"  {'transformers version bound':34s} FAIL {ver} is below vLLM's floor 4.55.2")
+    else:
+        print(f"  {'transformers version bound':34s} OK   {ver} in [4.55.2, 4.58)")
+except ModuleNotFoundError:
+    fail.append("transformers")
+    print(f"  {'transformers version bound':34s} SKIP transformers not installed")
 
 print()
 print("RESULT:", "ALL OK" if not fail else f"FAILURES: {fail}")
