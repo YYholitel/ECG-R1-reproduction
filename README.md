@@ -180,5 +180,6 @@ If you find ECG-R1 helpful for your research and applications, please cite our p
 ## Acknowledgement
 We thank the authors of [PULSE](https://github.com/AIMedLab/PULSE/tree/dev), [ECG-Chat](https://github.com/YubaoZhao/ECG-Chat), [GEM](https://github.com/lanxiang1017/GEM), and [Swift](https://github.com/modelscope/ms-swift) for their publicly released models, datasets, and training codes.
 
-## 复现进度
-- 阶段 0 环境准备完成
+## 复现进度（2026-10-11）
+
+环境与官方最终权重已校验，真实图像推理已跑通。30k SFT、RL 4k 与 Grounding 测试引用的图像齐全；原始 ECG 波形、ECGInstruct 图像及 ECG-Bench 图像尚未就位。官方完整评测和自行 SFT/RL 尚未完成。详细数量见 [数据盘点](DATA_INVENTORY_2026-10-11.md)；已有推理结果见 [复现记录](REPRODUCTION_NOTES.md)。

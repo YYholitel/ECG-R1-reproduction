@@ -71,9 +71,9 @@ repository keeps only the reproducible setup record.
 
 ### Still outstanding
 
-- Real data has not been downloaded; `inference.sh` still carries `/path/to` placeholders.
+- Image data now covers the 30k SFT, RL 4k and 2,381-record Grounding test JSONLs; raw ECG waveforms and ECGInstruct/ECG-Bench images remain missing. See [the 2026-10-11 inventory](DATA_INVENTORY_2026-10-11.md).
 - Training (SFT/RL) has not been attempted.
-- Evaluation scripts have not been run against the official test sets.
+- Official evaluation scripts have not been run against the complete test sets.
 ## First real evaluation signal: 5 MIMIC-IV samples (2026-10-09)
 
 Not a benchmark - five samples - but the first end-to-end check against ground truth.
